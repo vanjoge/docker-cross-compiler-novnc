@@ -1,36 +1,34 @@
-FROM dorowu/ubuntu-desktop-lxde-vnc:bionic
-LABEL maintainer="gdavid0510@gmail.com"
+FROM dorowu/ubuntu-desktop-lxde-vnc:focal
 
-# Upgrade installed packages
-RUN 	rm -rf /etc/apt/sources.list.d/fcwu-tw-ubuntu-apps-bionic.list* \
-	&&	sed -i 's/tw.//g' /etc/apt/sources.list \
-	&&	apt-get update -qq \
-	&&	apt-get install -y --no-install-recommends -qq apt-utils \
-	&&	apt-get purge -y -qq fonts-wqy-zenhei \
-	&&	apt-get autoremove -y -qq \
-	&&	apt-get upgrade -y -qq
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN apt-get update -qq \
+	&&  apt-get purge -y -qq google-chrome-stable \
+	&&  apt-get upgrade -y -qq
 
-# Install required packages
-RUN 	apt-get install -y --no-install-recommends -qq software-properties-common locales \
-	&&	add-apt-repository -y ppa:papirus/papirus \
-	&&	add-apt-repository -y ppa:apt-fast/stable \
-	&&	curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg \
-	&&	install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/ \
-	&&	sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list' \
-	&&	rm -f microsoft.gpg \
-	&&	apt-get update -qq
+# Set Area and Timezone
+RUN echo 'tzdata tzdata/Areas select Asia' | debconf-set-selections
+RUN echo 'tzdata tzdata/Zones/Asia select Chongqing' | debconf-set-selections
+RUN DEBIAN_FRONTEND="noninteractive" apt install -y tzdata
+
+# Install required packages for FriendlyElec's boards
+RUN apt-get -y install texinfo git
+RUN git clone https://github.com/friendlyarm/build-env-on-ubuntu-bionic
+RUN chmod 755 build-env-on-ubuntu-bionic/install.sh
+RUN build-env-on-ubuntu-bionic/install.sh
+RUN rm -rf build-env-on-ubuntu-bionic
+RUN update-alternatives --install $(which python) python /usr/bin/python2.7 20
+RUN git clone https://github.com/friendlyarm/repo
+RUN cp repo/repo /usr/bin/
+
+# Install other required packages
 RUN 	apt-get install -y --no-install-recommends -qq \
-	nano bash-completion wget code lxtask openssh-server git xdotool filezilla putty dnsutils apt-fast \
-	papirus-icon-theme fonts-noto-cjk fonts-noto-cjk-extra obconf lxappearance-obconf \
-	&&	apt-get clean
-
-# Configure vscode extension --DISABLED: error on root
-#RUN 	code --install-extension mhutchie.git-graph \
-#	&&	code --install-extension eamodio.gitlens
+	software-properties-common locales \
+	nano bash-completion lxtask openssh-server xdotool filezilla putty dnsutils \
+	papirus-icon-theme fonts-noto-cjk fonts-noto-cjk-extra obconf lxappearance-obconf vim terminator tree rsync \
+    poppler-utils shared-mime-info mime-support
+RUN		apt-get clean
 
 # Customizations : remove unused, change settings, copy conf files
-RUN rm /usr/local/share/doro-lxde-wallpapers/bg[2-4].jpg \
-	&&	sed -i "s/UI.initSetting('resize', 'off');/UI.initSetting('resize', 'scale');/g" /usr/local/lib/web/frontend/static/novnc/app/ui.js
 COPY files /
 
 # SSHD run bugfix

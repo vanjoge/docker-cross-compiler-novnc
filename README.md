@@ -1,27 +1,33 @@
 # docker-ubuntu-lxde-novnc
 
-[![](https://img.shields.io/docker/pulls/hdavid0510/ubuntu-desktop-lxde-vnc?style=flat-square)](https://hub.docker.com/r/hdavid0510/ubuntu-desktop-lxde-vnc) [![](https://img.shields.io/github/issues/hdavid0510/docker-ubuntu-lxde-novnc?style=flat-square)](https://github.com/hdavid0510/docker-ubuntu-lxde-novnc/issues)  
-Customized LXDE ubuntu desktop environment on top of [dorowu/ubuntu-desktop-lxde-vnc](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc)
-
+Docker-based build environment based on [dorowu/ubuntu-desktop-lxde-vnc](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc) with toolchain pre-installed.  
+Easy cross-compilation for FriendlyElec's boards.  
 
 ---
-## Tags
-
-### latest
-[![](https://img.shields.io/docker/v/hdavid0510/ubuntu-desktop-lxde-vnc/latest?style=flat-square)](https://hub.docker.com/r/hdavid0510/ubuntu-desktop-lxde-vnc/tags) [![](https://img.shields.io/docker/image-size/hdavid0510/ubuntu-desktop-lxde-vnc/latest?style=flat-square)]()  
-Built from `master` branch
-
-### amd64-bionic  
-[![](https://img.shields.io/docker/v/hdavid0510/ubuntu-desktop-lxde-vnc/amd64-bionic?style=flat-square)](https://hub.docker.com/r/hdavid0510/ubuntu-desktop-lxde-vnc/tags) [![](https://img.shields.io/docker/image-size/hdavid0510/ubuntu-desktop-lxde-vnc/amd64-bionic?style=flat-square)]()  
-Customization based on [dorowu/ubuntu-desktop-lxde-vnc:bionic](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc)(Ubuntu 18.04)  
-Built from `amd64-bionic` branch
-
-### amd64-focal  
-[![](https://img.shields.io/docker/v/hdavid0510/ubuntu-desktop-lxde-vnc/amd64-focal?style=flat-square)](https://hub.docker.com/r/hdavid0510/ubuntu-desktop-lxde-vnc/tags) [![](https://img.shields.io/docker/image-size/hdavid0510/ubuntu-desktop-lxde-vnc/amd64-focal?style=flat-square)]()  
-Customization based on [dorowu/ubuntu-desktop-lxde-vnc:focal](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc)(Ubuntu 20.04)  
-Built from `amd64-focal` branch
-
-
+## Quick Start
+### Build
+```
+git clone https://github.com/friendlyarm/docker-ubuntu-lxde-novnc
+cd docker-ubuntu-lxde-novnc
+docker build --no-cache -t docker-ubuntu-lxde-novnc .
+```
+Setup the proxy for Dockerfile building:
+```
+docker build --no-cache -t docker-ubuntu-lxde-novnc \
+    --build-arg https_proxy=http://127.0.0.1:1080 \
+    --build-arg http_proxy=http://127.0.0.1:1080 .
+```
+### Run container as a non-root user
+```
+docker run -p 8080:80 -p 5900:5900 \
+    -e HTTP_PASSWORD=password \
+    -e VNC_PASSWORD=password \
+    -e USER=ubuntu \
+    -e PASSWORD=ubuntu \
+    -v /dev/shm:/dev/shm \
+    -e RESOLUTION=1280x720 \
+    docker-ubuntu-lxde-novnc:latest
+```
 ---
 ## Environment Variables
 
@@ -48,3 +54,9 @@ Faster container initialization by skipping `chown`-ing every files and director
 
 ### `VNC_PASSWORD`
 * Authentication method provided by noVNC. Password longer than 8 characters will be truncated to 8 characters.
+
+---
+## Acknowledgments
+- [fcwu/docker-ubuntu-vnc-desktop](https://github.com/fcwu/docker-ubuntu-vnc-desktop)
+- [hdavid0510/docker-ubuntu-lxde-novnc](https://github.com/hdavid0510/docker-ubuntu-lxde-novnc)
+- [dorowu/ubuntu-desktop-lxde-vnc](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc)
