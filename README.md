@@ -4,30 +4,41 @@ Docker-based build environment based on [dorowu/ubuntu-desktop-lxde-vnc](https:/
 Easy cross-compilation for FriendlyElec's boards.  
 
 ---
-## Quick Start
+## Usage
 ### Build
 ```
 git clone https://github.com/friendlyarm/docker-ubuntu-lxde-novnc
 cd docker-ubuntu-lxde-novnc
 docker build --no-cache -t docker-ubuntu-lxde-novnc .
 ```
-Setup the proxy for Dockerfile building:
+or setup the proxy for Dockerfile building:
 ```
 docker build --no-cache -t docker-ubuntu-lxde-novnc \
     --build-arg https_proxy=http://127.0.0.1:1080 \
     --build-arg http_proxy=http://127.0.0.1:1080 .
 ```
 ### Run container as a non-root user
+*Note: Mapping the /dev directory is to make the newly created loop devices appear in the container.*
 ```
-docker run -p 8080:80 -p 5900:5900 \
+docker run --privileged -it -v /dev:/dev \
+    --name docker-ubuntu-lxde-novnc \
+    -p 6080:80 \
+    -p 5900:5900 \
     -e HTTP_PASSWORD=password \
     -e VNC_PASSWORD=password \
     -e USER=ubuntu \
     -e PASSWORD=ubuntu \
-    -v /dev/shm:/dev/shm \
     -e RESOLUTION=1280x720 \
     docker-ubuntu-lxde-novnc:latest
 ```
+### Shell
+```
+docker exec -it --user ubuntu --workdir /home/ubuntu docker-ubuntu-lxde-novnc bash
+```
+## Test Cases
+- [x] build kernel 5.10
+- [x] build uboot v2017.09
+- [x] package the image by using sd-fuse
 ---
 ## Environment Variables
 
