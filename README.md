@@ -20,7 +20,7 @@ docker build --no-cache -t docker-ubuntu-lxde-novnc \
 ### Run container as a non-root user
 *Note: Mapping the /dev directory is to make the newly created loop devices appear in the container.*
 ```
-docker run --privileged -it -v /dev:/dev \
+docker run --privileged -v /dev:/dev \
     --name docker-ubuntu-lxde-novnc \
     -p 6080:80 \
     -p 5900:5900 \
@@ -28,8 +28,13 @@ docker run --privileged -it -v /dev:/dev \
     -e VNC_PASSWORD=password \
     -e USER=ubuntu \
     -e PASSWORD=ubuntu \
+    -v ~/.gitconfig:/home/ubuntu/.gitconfig:ro \
     -e RESOLUTION=1280x720 \
     docker-ubuntu-lxde-novnc:latest
+```
+### Check your git configuration
+```
+docker exec -it --user ubuntu docker-ubuntu-lxde-novnc bash -c 'git config --list'
 ```
 ### Shell
 ```
