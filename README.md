@@ -1,11 +1,10 @@
-# docker-ubuntu-lxde-novnc
+# docker-cross-compiler-novnc
 
-Docker-based build environment based on [dorowu/ubuntu-desktop-lxde-vnc](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc) with toolchain pre-installed.  
-Easy cross-compilation for FriendlyElec's boards.  
+Docker-based build environment based on [dorowu/ubuntu-desktop-lxde-vnc](https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc) with pre-built and configured toolchains for cross compiling.
 
 ---
 ## Usage
-### Build
+### Installation
 ```
 git clone https://github.com/friendlyarm/docker-ubuntu-lxde-novnc
 cd docker-ubuntu-lxde-novnc
@@ -17,7 +16,7 @@ docker build --no-cache -t docker-ubuntu-lxde-novnc \
     --build-arg https_proxy=http://127.0.0.1:1080 \
     --build-arg http_proxy=http://127.0.0.1:1080 .
 ```
-### Run container as a non-root user
+### Run
 *Note: Mapping the /dev directory is to make the newly created loop devices appear in the container.*
 ```
 mkdir ~/work
@@ -41,10 +40,14 @@ docker run --rm --privileged -v /dev:/dev \
 ```
 docker exec -it --user ubuntu docker-ubuntu-lxde-novnc bash -c 'git config --list'
 ```
-### Shell
+### Get a bash shell
 ```
 docker exec -it --user ubuntu --workdir /home/ubuntu docker-ubuntu-lxde-novnc bash
 ```
+### VNC Viewer
+open the vnc viewer and connect to port 5900.
+### Web brower
+Browse http://127.0.0.1:6080/
 ## Test Cases
 Successfully compiled the following projects:
 - [x] android 8.1
