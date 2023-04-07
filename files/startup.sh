@@ -20,11 +20,14 @@ if [ -n "$RESOLUTION" ]; then
     sed -i "s/1024x768/$RESOLUTION/" /usr/local/bin/xvfb.sh
 fi
 
+PGID=${PGID:-1000}
+PUID=${PUID:-1000}
 USER=${USER:-root}
 HOME=/root
 if [ "$USER" != "root" ]; then
     echo "* enable custom user: $USER"
-    useradd --create-home --shell /bin/bash --user-group --groups adm,sudo $USER
+    groupadd -r -g $PGID $USER
+    useradd -u $PUID -g $PGID --create-home --shell /bin/bash --groups adm,sudo $USER
     if [ -z "$PASSWORD" ]; then
         echo "  set default password to \"ubuntu\""
         PASSWORD=ubuntu
@@ -32,7 +35,7 @@ if [ "$USER" != "root" ]; then
     HOME=/home/$USER
     echo "$USER:$PASSWORD" | chpasswd
     cp -r /root/{.config,.gtkrc-2.0,.asoundrc} ${HOME}
-	cp -f /root/.gtkrc-2.0.mine ${HOME}
+    cp -f /root/.gtkrc-2.0.mine ${HOME}
     chown -R $USER:$USER ${HOME}
     [ -d "/dev/snd" ] && chgrp -R adm /dev/snd
 fi

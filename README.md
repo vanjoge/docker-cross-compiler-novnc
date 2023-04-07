@@ -28,6 +28,8 @@ docker run --rm --privileged -v /dev:/dev \
     -p 5900:5900 \
     -e HTTP_PASSWORD=password \
     -e VNC_PASSWORD=password \
+    -e PUID=1000 \
+    -e PGID=1000 \
     -e USER=ubuntu \
     -e PASSWORD=ubuntu \
     -v ~/.gitconfig:/home/ubuntu/.gitconfig:ro \
