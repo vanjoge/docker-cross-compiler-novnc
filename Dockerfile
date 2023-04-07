@@ -33,3 +33,6 @@ COPY files /
 
 # SSHD run bugfix
 RUN mkdir -p /run/sshd
+
+# Fixing the issue: Communication error with Jack server (35) when building AOSP (Android8.1)
+RUN sed 's/^\(jdk.tls.disabledAlgorithms=.*\)\(TLSv1, TLSv1.1, \)/\1/g' /etc/java-8-openjdk/security/java.security -i

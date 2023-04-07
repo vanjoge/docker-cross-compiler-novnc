@@ -47,6 +47,7 @@ docker exec -it --user ubuntu --workdir /home/ubuntu docker-ubuntu-lxde-novnc ba
 ```
 ## Test Cases
 Successfully compiled the following projects:
+- [x] android 8.1
 - [x] android 10
 - [x] android 12 (tv & tablet)
 - [x] kernel 4.4
