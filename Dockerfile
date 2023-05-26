@@ -1,5 +1,8 @@
 FROM dorowu/ubuntu-desktop-lxde-vnc:focal
 
+# ENV http_proxy http://192.168.1.1:1082
+# ENV https_proxy http://192.168.1.1:1082
+
 RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN apt-get update -qq \
 	&&  apt-get purge -y -qq google-chrome-stable \

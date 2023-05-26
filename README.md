@@ -12,9 +12,13 @@ docker build --no-cache -t docker-ubuntu-lxde-novnc .
 ```
 or setup the proxy for Dockerfile building:
 ```
-docker build --no-cache -t docker-ubuntu-lxde-novnc \
-    --build-arg https_proxy=http://192.168.1.1:1080 \
-    --build-arg http_proxy=http://192.168.1.1:1080 .
+vim Dockerfile
+```
+Uncomment the following two lines, change the proxy address and rebuild:
+```
+# ENV http_proxy http://192.168.1.1:1082
+# ENV https_proxy http://192.168.1.1:1082
+```
 # Note: do not use 127.0.0.1 for the proxy address, use the IP address of the LAN instead
 ```
 ### Run
