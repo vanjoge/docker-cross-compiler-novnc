@@ -19,8 +19,8 @@ Uncomment the following two lines, change the proxy address and rebuild:
 # ENV http_proxy http://192.168.1.1:1082
 # ENV https_proxy http://192.168.1.1:1082
 ```
-Note: do not use 127.0.0.1 for the proxy address, use the IP address of the LAN instead
-```
+Note: do not use 127.0.0.1 for the proxy address, use the IP address of the LAN instead  
+
 ### Run
 *Note: Mapping the /dev directory is to make the newly created loop devices appear in the container.*
 ```
