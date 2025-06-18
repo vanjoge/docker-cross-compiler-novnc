@@ -19,7 +19,7 @@ RUN git clone https://github.com/friendlyarm/build-env-on-ubuntu-bionic
 RUN chmod 755 build-env-on-ubuntu-bionic/install.sh
 RUN build-env-on-ubuntu-bionic/install.sh
 RUN rm -rf build-env-on-ubuntu-bionic
-RUN update-alternatives --install $(which python) python /usr/bin/python2.7 20
+RUN apt-get -y install python-is-python3
 RUN git clone https://github.com/friendlyarm/repo
 RUN cp repo/repo /usr/bin/
 
