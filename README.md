@@ -24,20 +24,19 @@ Note: do not use 127.0.0.1 for the proxy address, use the IP address of the LAN 
 ### Run
 *Note: Mapping the /dev directory is to make the newly created loop devices appear in the container.*
 ```
-mkdir ~/work
-chown 1000:1000 ~/work
+mkdir -p work
 docker run --rm --privileged -v /dev:/dev \
     --name docker-ubuntu-lxde-novnc \
     -p 6080:80 \
     -p 5900:5900 \
     -e HTTP_PASSWORD=password \
     -e VNC_PASSWORD=password \
-    -e PUID=1000 \
-    -e PGID=1000 \
+    -e PUID=$(id -u) \
+    -e PGID=$(id -g) \
     -e USER=ubuntu \
     -e PASSWORD=ubuntu \
     -v ~/.gitconfig:/home/ubuntu/.gitconfig:ro \
-    -v ~/work:/home/ubuntu/work \
+    -v ./work:/home/ubuntu/work \
     -e RESOLUTION=1280x720 \
     docker-ubuntu-lxde-novnc:latest
 ```
@@ -58,14 +57,17 @@ Successfully compiled the following projects:
 - [x] android 8.1
 - [x] android 10
 - [x] android 12 (tv & tablet)
+- [x] android 14 (tv & tablet)
 - [x] kernel 4.4
 - [x] kernel 4.19
 - [x] kernel 5.10
 - [x] kernel 5.15
+- [x] kernel 6.1
 - [x] uboot v2014.10
 - [x] uboot v2017.09
-- [x] friendlywrt v22.03
 - [x] friendlywrt v21.02
+- [x] friendlywrt v22.03
+- [x] friendlywrt v24.10
 - [x] buildroot
 - [x] package the image by using sd-fuse_xxx
 ---
