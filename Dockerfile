@@ -28,7 +28,7 @@ RUN 	apt-get install -y --no-install-recommends -qq \
 	software-properties-common locales \
 	nano bash-completion lxtask openssh-server xdotool filezilla putty dnsutils \
 	papirus-icon-theme fonts-noto-cjk fonts-noto-cjk-extra obconf lxappearance-obconf vim terminator tree rsync \
-    poppler-utils shared-mime-info mime-support
+    poppler-utils shared-mime-info mime-support gitg
 RUN		apt-get clean
 
 # Customizations : remove unused, change settings, copy conf files
