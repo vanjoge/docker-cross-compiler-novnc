@@ -31,6 +31,6 @@ jobs:
         context: .
         platforms: linux/amd64
         push: true
-        tags: |
+        tags: 
           docker.cnb.cool/rtvsmirror/vanjoge/docker-ubuntu-lxde-novnc:latest
 
